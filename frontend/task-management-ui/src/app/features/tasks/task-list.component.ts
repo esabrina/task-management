@@ -1,6 +1,7 @@
 import { Component, inject, signal } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
+import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { AuthService } from '../../core/services/auth.service';
 import { Task } from '../../core/models/task.model';
 import { TaskService } from '../../core/services/task.service';
@@ -9,7 +10,7 @@ import { TaskModalComponent } from './task-modal.component';
 @Component({
   selector: 'app-task-list',
   standalone: true,
-  imports: [DatePipe, TaskModalComponent],
+  imports: [DatePipe, TaskModalComponent, NgbTooltipModule],
   templateUrl: './task-list.component.html'
 })
 export class TaskListComponent {

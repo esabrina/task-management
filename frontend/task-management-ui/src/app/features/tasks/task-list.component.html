@@ -38,7 +38,7 @@
       } @else {
         <div class="table-responsive">
           <table class="table align-middle mb-0">
-            <thead class="table-light">
+            <thead class="table-light bg-table-header">
               <tr>
                 <th scope="col" class="ps-4">Task</th>
                 <th scope="col">Status</th>
@@ -53,13 +53,26 @@
                   (keydown.enter)="openTask(task.id)"
                   (keydown.space)="openTask(task.id); $event.preventDefault()">
                   <td class="ps-4">
-                    <div class="fw-semibold">{{ task.title }}</div>
+                    <div class="fw-semibold" ngbTooltip="View/Edit"
+                      placement="left" container="body" tooltipClass="task-action-tooltip">
+                      {{ task.title }}
+                    </div>
                     @if (task.description) {
-                      <div class="task-description small">{{ task.description }}</div>
+                      <div class="task-description small">
+                        {{ task.description }}
+                      </div>
                     }
                   </td>
-                  <td><span class="badge rounded-pill text-bg-light border">{{ task.status }}</span></td>
-                  <td>{{ task.dueDate | date:'mediumDate' }}</td>
+                  <td>
+                    <span class="badge rounded-pill text-bg-light border" ngbTooltip="View/Edit {{ task.title }}"
+                      placement="top" container="body" tooltipClass="task-action-tooltip">
+                      {{ task.status }}
+                    </span>
+                  </td>
+                  <td ngbTooltip="View/Edit {{ task.title }}" placement="top"
+                    container="body" tooltipClass="task-action-tooltip">
+                    {{ task.dueDate | date:'mediumDate' }}
+                  </td>
                   <td class="text-end pe-4">
                     <button type="button" class="btn btn-sm btn-outline-danger"
                       [attr.aria-label]="'Delete ' + task.title"
