@@ -14,7 +14,7 @@ The solution follows **Clean Architecture** principles and is composed of:
 - **JWT Bearer Authentication** for securing API endpoints
 - **Docker Compose** for running the local PostgreSQL database
 
-The application is intentionally designed to run locally without dependencies on cloud services.
+The application is intentionally designed to run locally without dependencies on cloud services. 
 
 The main goal is to keep the solution simple and maintainable while demonstrating separation of concerns, testability, API design, authentication, authorization, and frontend integration.
 
@@ -79,7 +79,7 @@ task-management/
 └── README.md
 ```
 
-The `infrastructure` directory contains files related to the local development environment.
+The `infrastructure` directory contains files related to overall local environment.
 
 ---
 

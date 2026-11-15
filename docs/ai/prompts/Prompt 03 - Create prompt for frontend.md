@@ -52,7 +52,7 @@ The prompt you generate must instruct the coding assistant to adhere to the foll
 <summary>Expand</summary>
 You are an expert Angular 18 Frontend Architect and Developer. Your task is to generate a complete, production-ready Angular 18 frontend project named `task-management-ui`. 
 
-The backend is an ASP.NET Core Web API running at `http://localhost:5000` (or `5001`), which expects requests from the Angular development server running at `http://localhost:4200`. 
+The backend is an ASP.NET Core Web API running at `http://localhost:56030` (or `56029`), which expects requests from the Angular development server running at `http://localhost:4200`. 
 
 ### Core Constraints & Guidelines
 1. **Scope**: Create ONLY the frontend Angular 18 project (`task-management-ui`). Do not generate backend files or unit tests.
@@ -100,7 +100,7 @@ The application must communicate with the following REST endpoints:
 ### Project Structure & Deliverables
 Please generate the complete source code files for the Angular 18 project, including:
 1. `angular.json`, `package.json` (with Bootstrap 5 dependency), and `tsconfig.json`.
-2. Environment configuration pointing to the backend API (`http://localhost:5000`).
+2. Environment configuration pointing to the backend API (`http://localhost:56030`).
 3. Core models/interfaces for User, AuthResponse, and Task.
 4. Services: `AuthService` and `TaskService`.
 5. Interceptors: `AuthInterceptor` for JWT injection and error handling.
