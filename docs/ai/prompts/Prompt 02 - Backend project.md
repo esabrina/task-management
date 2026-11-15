@@ -69,7 +69,7 @@ Provide the complete directory tree structure, followed by the full, working sou
 
 <details>
 <summary>Expand</summary>
-It includes the required task and authentication routes, Identity-based registration, 30-minute JWTs, owner-scoped task access, PostgreSQL/EF Core configuration, a migration with seeded statuses, and Swagger. Local setup is documented in README.md, with PostgreSQL in docker-compose.yml.
+It includes the required task and authentication routes, Identity-based registration, 30-minute JWTs, owner-scoped task access, PostgreSQL/EF Core configuration, a migration with seeded statuses, and Swagger. Local setup is documented in README.md, with PostgreSQL in infrastructure/docker/docker-compose.yml.
 
 Verification: Release build succeeded with zero warnings or errors. API smoke checks confirmed Swagger routes and authorization metadata, unauthenticated task access returns 401, and empty login returns the specified validation message. No test projects were added, as requested. The migration was generated but not applied; PostgreSQL was not running here.
 
@@ -82,4 +82,11 @@ Verification: Release build succeeded with zero warnings or errors. API smoke ch
 
 ## Validation
 
--
+- Reviewed generated architecture
+- Removed seed data from the DBContext and move it to a standart SQL file to be executed in the migrations.
+- Moved configuration from the codebase to AppSettings
+- Cleaned up the codebase by removing unnecessary code and directives
+- Split up DTO files with many classes
+- Merged Controllers
+- Created HealthCheck endpoint
+- Added more information to the readme files with AI

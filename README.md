@@ -60,7 +60,7 @@ For more details see the [Architecture Page](docs/architecture.md)
 
 ## Running the application
 
-From the repository root, run the setup-and-run-app.ps1 to start PostgreSQL, install dependencies, configure a local JWT signing key and the application:
+From the repository root, run the setup-and-run-app.ps1 to start PostgreSQL, install dependencies, configure a local JWT signing key and run the application:
 
 ```powershell
 .\setup-and-run-app.ps1
