@@ -1,0 +1,21 @@
+name: task-management
+
+services:
+  postgres:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: task_management
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "127.0.0.1:5432:5432"
+    volumes:
+      - task-management-postgres:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d task_management"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  task-management-postgres:

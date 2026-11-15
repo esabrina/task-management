@@ -48,9 +48,9 @@ Implement controllers supporting the following exact routes and operations:
 
 - Tasks:
   - `GET /api/tasks/` - Retrieve tasks.
-  - `GET /api/task/{id}` - Retrieve a specific task by its unique identifier.
-  - `PUT /api/task/{id}` - Update an existing task.
-  - `DELETE /api/task/{id}` - Delete a task.
+  - `GET /api/tasks/{id}` - Retrieve a specific task by its unique identifier.
+  - `PUT /api/tasks/{id}` - Update an existing task.
+  - `DELETE /api/tasks/{id}` - Delete a task.
 
 - Authentication:
   - `POST /api/auth/register` - Register a new user account.

@@ -55,24 +55,17 @@ For more details see the [Architecture Page](docs/architecture.md)
 ## Prerequisites
 
 - .NET 9 SDK
-- Docker with the Compose plugin
-- EF Core command-line tools 9.0.4 (`dotnet tool install --global dotnet-ef --version 9.0.4`; use `dotnet tool update --global dotnet-ef --version 9.0.4` if already installed)
+- Docker with the Compose plugin (must be running)
+- EF Core command-line tools 9.0.4 (will be installed automatically by the setup script)
 
 ## Running the application
 
-From the repository root, start PostgreSQL and configure a local JWT signing key:
+From the repository root, run the setup-and-run-app.ps1 to start PostgreSQL, install dependencies, configure a local JWT signing key and the application:
 
 ```powershell
-docker compose up -d
-$key = [Convert]::ToBase64String([Security.Cryptography.RandomNumberGenerator]::GetBytes(32))
-dotnet user-secrets set "Jwt:Key" $key --project backend\src\TaskManagement.Api\TaskManagement.Api.csproj
-dotnet ef database update --project backend\src\TaskManagement.Infrastructure\TaskManagement.Infrastructure.csproj --startup-project backend\src\TaskManagement.Api\TaskManagement.Api.csproj --context TaskManagementDbContext
-dotnet run --project backend\src\TaskManagement.Api\TaskManagement.Api.csproj
+.\setup-and-run-app.ps1
 ```
-
-The Compose database credentials are for local development only.
-
-Open the Swagger UI at `/swagger` on the address printed by `dotnet run`. The API listens for the Angular development server at `http://localhost:4200` by default; configure `AllowedOrigins` to change this.
+```
 
 ## Running tests
 

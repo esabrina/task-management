@@ -67,16 +67,15 @@ task-management/
 │
 ├── infrastructure/
 │   ├── docker/
-│   └── seed/
+│   │   └── docker-compose.yml
+│   
 │
 ├── docs/
 │   ├── architecture.md
 │   ├── user-story.md
 │   └── ai/
 │       ├── prompts.md
-│       └── validation.md
 │
-├── docker-compose.yml
 └── README.md
 ```
 
@@ -90,10 +89,10 @@ The backend follows a simplified Clean Architecture approach with four projects:
 
 ```mermaid
 flowchart TB
-    API[TaskManagement.Api]
-    APP[TaskManagement.Application]
-    DOMAIN[TaskManagement.Domain]
-    INFRA[TaskManagement.Infrastructure]
+    API[Api]
+    APP[Application]
+    DOMAIN[Domain]
+    INFRA[Infrastructure]
 
     API --> APP
     API --> INFRA
@@ -265,17 +264,17 @@ The main application entities are:
 
 ```mermaid
 erDiagram
-    USER ||--o{ TASK : owns
-    TASK_STATUS ||--o{ TASK : classifies
+    AspNetUser ||--o{ Task : owns
+    TaskStatus ||--o{ Task : classifies
 
-    USER {
+    AspNetUser {
         uuid Id PK "required"
         string Email "required"
         string PasswordHash "required"
         datetime CreatedAt "required"
     }
 
-    TASK {
+    Task {
         uuid Id PK "required"
         string Title "required"
         string Description
@@ -286,7 +285,7 @@ erDiagram
         datetime UpdatedAt
     }
 
-    TASK_STATUS {
+    TaskStatus {
         int Id PK "required"
         string Name "required"
     }

@@ -5,54 +5,31 @@ The backend uses Clean Architecture, PostgreSQL, Entity Framework Core, ASP.NET 
 ## Requirements
 
 - .NET 9 SDK
-- Docker with the Compose plugin
-- EF Core CLI 9.0.4
+- Docker with the Compose plugin (must be running)
+- EF Core command-line tools 9.0.4 (will be installed automatically by the setup script)
 
-Install the EF Core CLI if needed:
-
-```powershell
-dotnet tool install --global dotnet-ef --version 9.0.4
-```
-
-If `dotnet-ef` is already installed, update it instead:
-
-```powershell
-dotnet tool update --global dotnet-ef --version 9.0.4
-```
 
 ## Run locally
 
-Run these commands from the repository root. PostgreSQL uses the local-development credentials configured in `docker-compose.yml` and `appsettings.json`.
+Run the following command from the repository root, it will create the environment and run the application. 
 
 ```powershell
-docker compose up -d
-
-# Store a random signing key in .NET user-secrets (not in source control).
-$key = [Convert]::ToBase64String([Security.Cryptography.RandomNumberGenerator]::GetBytes(32))
-dotnet user-secrets set "Jwt:Key" $key --project backend\src\TaskManagement.Api\TaskManagement.Api.csproj
-
-# Create/update the PostgreSQL schema using the checked-in EF Core migration.
-dotnet ef database update `
-  --project backend\src\TaskManagement.Infrastructure\TaskManagement.Infrastructure.csproj `
-  --startup-project backend\src\TaskManagement.Api\TaskManagement.Api.csproj `
-  --context TaskManagementDbContext
-
-dotnet run --project backend\src\TaskManagement.Api\TaskManagement.Api.csproj
+.\setup-and-run-app.ps1
 ```
 
-The API requires `Jwt:Key` to be configured and validates JWTs with the configured issuer and audience. Tokens expire after 30 minutes. The default CORS origin is `http://localhost:4200`; change `AllowedOrigins` in the API configuration if the frontend uses a different origin.
-
-Open Swagger UI at `/swagger` on the local address printed by `dotnet run`.
+Open Swagger UI at `/swagger` on the local address (https://localhost:56029/swagger/index.html)
 
 ## API endpoints
 
-All routes below are relative to the API host. The authentication routes are anonymous; every task route requires:
+The API listens for the Angular development server at `http://localhost:4200`.
+
+The `auth` routes are anonymous and `tasks` route requires access token like this:
 
 ```http
 Authorization: Bearer <accessToken>
 ```
 
-### Authentication (anonymous)
+### Authentication routes (anonymous)
 
 | Method | Route | Description |
 |---|---|---|
@@ -70,17 +47,17 @@ Example registration/login request:
 
 The login response contains `accessToken` and `expiresAt`.
 
-### Tasks (bearer token required)
+### Tasks routes (bearer token required)
 
 | Method | Route | Description |
 |---|---|---|
 | `GET` | `/api/tasks/` | List the authenticated user's tasks, ordered by due date. |
 | `POST` | `/api/tasks` | Create a task for the authenticated user. |
-| `GET` | `/api/task/{id}` | Retrieve one of the authenticated user's tasks. |
-| `PUT` | `/api/task/{id}` | Update one of the authenticated user's tasks. |
-| `DELETE` | `/api/task/{id}` | Delete one of the authenticated user's tasks. |
+| `GET` | `/api/tasks/{id}` | Retrieve one of the authenticated user's tasks. |
+| `PUT` | `/api/tasks/{id}` | Update one of the authenticated user's tasks. |
+| `DELETE` | `/api/tasks/{id}` | Delete one of the authenticated user's tasks. |
 
-
+Tokens expire after 30 minutes.
 
 ## Solution structure
 
@@ -94,11 +71,7 @@ backend/
     └── TaskManagement.Infrastructure/ # EF Core, PostgreSQL, Identity, JWT, migrations
 ```
 
-Build the backend solution from the repository root:
-
-```powershell
-dotnet build backend\src\TaskManagement.sln
-```
+The Compose database credentials are for local development only.
 
 ## Running tests
 No unit or integration test projects are included yet.
