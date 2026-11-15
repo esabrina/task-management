@@ -17,7 +17,7 @@ Run the following command from the repository root, it will create the environme
 .\setup-and-run-app.ps1
 ```
 
-Open Swagger UI at `/swagger` on the local address (https://localhost:56029/swagger/index.html)
+Open Swagger UI at `/swagger` on the local address (https://localhost:56029/swagger/)
 
 ## API endpoints
 

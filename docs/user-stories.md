@@ -1,5 +1,9 @@
 # User Stories
 
+> Detailed user stories and acceptance criteria defining the expected system behavior using Gherkin (BDD) format.
+
+---
+
 ## 1. User Registration
 
 As a user,  
@@ -86,13 +90,6 @@ Then the system should prevent the login
 And the missing field should be highlighted  
 And display the message "Invalid email or password"
 
-**AC4 — Authenticated user accessing login page** (Remove?)
-
-Given the user is already authenticated  
-When the user attempts to access the login page  
-Then the system should prevent access to the login page  
-And the frontend should remove the access token  
-And the user should be redirected to the login page.
 
 ---
 
@@ -104,7 +101,7 @@ so that I can securely end my session.
 
 ### Acceptance criteria
 
-**AC1 — Successful logout** (refinar)
+**AC1 — Successful logout**
 
 Given the user is authenticated  
 And a valid access token is stored by the frontend  
@@ -135,9 +132,9 @@ so that I can organize my work and monitor my progress.
 
 Given the user is authenticated  
 And is on the task list page
-When the user clicks on "Create" buttom 
+When the user clicks on "Create" buttom
 Then the system should display the task creation form 
-When the user provides a task title, valid due date, selects the status and submits the task  
+When the user provides a task title, valid due date, selects the status and submits the task
 Then the system should create the task  
 And associate the task with the authenticated user  
 And the user should be redirected to the task list.
@@ -164,19 +161,19 @@ And an error message ("Invalid field.") should be displayed.
 
 As a logged-in user,
 I want to view my tasks,
-so that I can keep track of my work and deadlines.
+So that I can keep track of my work and deadlines.
 
 ### Acceptance criteria
 
 **AC1 — View task list**
 
 Given the user is authenticated  
-When the user accesses the task list  
-Then the system should return only tasks (title, description, status, dueDate and dateCreated) belonging to the authenticated user, ordered by due date.
+When the user accesses the task list
+Then the system should return only tasks (title, description, status and dueDate) belonging to the authenticated user, ordered by due date
 
 **AC2 — View task**
 
-Given the user is authenticated 
+Given the user is authenticated
 And is on the task list page  
 And the task list is not empty  
 When the user clicks on a task
@@ -195,7 +192,7 @@ Then the API should return 404 Not Found
 
 As a logged-in user,
 I want to update my tasks,
-so that I can keep their information and status up to date.
+So that I can keep their information and status up to date.
 
 ### Acceptance criteria
 
@@ -238,8 +235,8 @@ so that I can remove tasks that are no longer needed.
 
 **AC1 — Delete existing task**
 
-Given the user is authenticated  
-And is on the task list page 
+Given the user is authenticated
+And is on the task list page
 And the task list is not empty
 When the user clicks the task's delete button
 Then the system should ask the user to confirm the deletion
@@ -254,3 +251,13 @@ Given the user is authenticated
 When the user attempts to delete a task that does not exist
 Or the requested task belongs to another user
 Then the API should return 404 Not Found.
+
+**AC3 — Delete task not confirmed**
+
+Given the user is authenticated
+And is on the task list page
+And the task list is not empty
+When the user clicks the task's delete button
+Then the system should ask the user to confirm the deletion
+When the user cancels the deletion
+Then the system should not delete the task

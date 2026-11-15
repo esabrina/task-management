@@ -84,7 +84,7 @@ Verification: Release build succeeded with zero warnings or errors. API smoke ch
 
 - Reviewed generated architecture
 - Removed seed data from the DBContext and move it to a standart SQL file to be executed in the migrations.
-- Validated API return messages and status codes against user stories
+- For each user story, verify that the LLM-generated API response messages and status codes match the documentation
 - Moved configuration from the codebase to AppSettings
 - Cleaned up the codebase by removing unnecessary code and directives
 - Split up DTO files with many classes
