@@ -1,3 +1,4 @@
+using AutoMapper;
 using TaskManagement.Application.DTOs;
 using TaskManagement.Application.Exceptions;
 using TaskManagement.Application.Interfaces;
@@ -9,18 +10,25 @@ namespace TaskManagement.Application.Services;
 public sealed class TaskService(
     ITaskRepository taskRepository,
     ITaskStatusRepository taskStatusRepository,
-    IUnitOfWork unitOfWork) : ITaskService
+    IUnitOfWork unitOfWork,
+    IMapper mapper) : ITaskService
 {
     public async Task<IReadOnlyList<TaskResponseDto>> GetAllAsync(Guid userId, CancellationToken cancellationToken)
     {
         var tasks = await taskRepository.GetAllForUserAsync(userId, cancellationToken);
-        return tasks.Select(Map).ToArray();
+        return tasks.Select(mapper.Map<TaskResponseDto>).ToArray();
     }
 
     public async Task<TaskResponseDto> GetByIdAsync(Guid taskId, Guid userId, CancellationToken cancellationToken)
     {
         var task = await GetOwnedTaskAsync(taskId, userId, cancellationToken);
-        return Map(task);
+        return mapper.Map<TaskResponseDto>(task);
+    }
+
+    public async Task<IReadOnlyList<TaskStatusResponseDto>> GetAllTaskStatusesAsync(CancellationToken cancellationToken)
+    {
+        var statuses = await taskStatusRepository.GetAllAsync(cancellationToken);
+        return statuses.Select(mapper.Map<TaskStatusResponseDto>).ToArray();
     }
 
     public async Task<TaskResponseDto> CreateAsync(
@@ -29,7 +37,7 @@ public sealed class TaskService(
         CancellationToken cancellationToken)
     {
         ValidateTitle(request.Title);
-        var status = await GetStatusAsync(request.StatusId!.Value, cancellationToken);
+        var status = await GetStatusByIdAsync(request.StatusId!.Value, cancellationToken);
 
         var task = new TaskItem(
             userId,
@@ -41,8 +49,7 @@ public sealed class TaskService(
         await taskRepository.AddAsync(task, cancellationToken);
         await unitOfWork.SaveChangesAsync(cancellationToken);
 
-        //TODO: Add automapper to map entities to DTOs
-        return Map(task);
+        return mapper.Map<TaskResponseDto>(task);
     }
 
     public async Task<TaskResponseDto> UpdateAsync(
@@ -53,12 +60,11 @@ public sealed class TaskService(
     {
         var task = await GetOwnedTaskAsync(taskId, userId, cancellationToken);
         ValidateTitle(request.Title);
-        var status = await GetStatusAsync(request.StatusId!.Value, cancellationToken);
+        var status = await GetStatusByIdAsync(request.StatusId!.Value, cancellationToken);
 
         task.Update(request.Title.Trim(), request.Description, status, request.DueDate!.Value.ToUniversalTime());
         await unitOfWork.SaveChangesAsync(cancellationToken);
-        //TODO: Add automapper to map entities to DTOs
-        return Map(task);
+        return mapper.Map<TaskResponseDto>(task);
     }
 
     public async Task DeleteAsync(Guid taskId, Guid userId, CancellationToken cancellationToken)
@@ -74,14 +80,14 @@ public sealed class TaskService(
             ?? throw new NotFoundException("Task not found.");
     }
 
-    private async Task<Domain.Entities.TaskStatus> GetStatusAsync(int statusId, CancellationToken cancellationToken)
+    private async Task<Domain.Entities.TaskStatus> GetStatusByIdAsync(int statusId, CancellationToken cancellationToken)
     {
         var status = await taskStatusRepository.GetByIdAsync(statusId, cancellationToken);
         if (status is null)
         {
             throw new RequestValidationException(new Dictionary<string, string[]>
             {
-                ["statusId"] = ["The selected task status is invalid."]
+                ["statusId"] = ["Task status is invalid."]
             });
         }
 
@@ -94,21 +100,8 @@ public sealed class TaskService(
         {
             throw new RequestValidationException(new Dictionary<string, string[]>
             {
-                ["title"] = ["The title field is required."]
+                ["title"] = ["Title field is required."]
             });
         }
-    }
-
-    private static TaskResponseDto Map(TaskItem task)
-    {
-        return new TaskResponseDto(
-            task.Id,
-            task.Title,
-            task.Description,
-            task.StatusId,
-            task.Status?.Name ?? string.Empty,
-            task.DueDate,
-            task.CreatedAt,
-            task.UpdatedAt);
     }
 }

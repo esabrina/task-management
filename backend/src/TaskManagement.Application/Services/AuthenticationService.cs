@@ -13,12 +13,12 @@ public sealed class AuthenticationService(
         var result = await identityService.RegisterAsync(request.Email, request.Password, cancellationToken);
         if (result.Succeeded)
         {
-            return new RegisterResponseDto("Account registered successfully.");
+            return new RegisterResponseDto("User registered successfully.");
         }
 
         if (result.EmailAlreadyExists)
         {
-            throw new ConflictException("An account with this email is already registered.");
+            throw new ConflictException("Email is already registered.");
         }
 
         throw new RequestValidationException(new Dictionary<string, string[]>

@@ -56,8 +56,13 @@ The login response contains `accessToken` and `expiresAt`.
 | `GET` | `/api/tasks/{id}` | Retrieve one of the authenticated user's tasks. |
 | `PUT` | `/api/tasks/{id}` | Update one of the authenticated user's tasks. |
 | `DELETE` | `/api/tasks/{id}` | Delete one of the authenticated user's tasks. |
+| `GET` | `/api/tasks/status` | List all available task statuses. |
 
 Tokens expire after 30 minutes.
+
+### Health check
+
+Health check endpoint checks application and database health. It's available at `/health`
 
 ## Solution structure
 

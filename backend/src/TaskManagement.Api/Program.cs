@@ -1,10 +1,9 @@
-using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi.Models;
+using System.Text;
+using TaskManagement.Api.Configuration;
 using TaskManagement.Api.Middleware;
-using TaskManagement.Api.Swagger;
 using TaskManagement.Application;
 using TaskManagement.Infrastructure;
 using TaskManagement.Infrastructure.Identity;
@@ -20,21 +19,7 @@ var allowedOrigins = builder.Configuration.GetSection("AllowedOrigins").Get<stri
 builder.Services.AddCors(options => options.AddPolicy("Frontend", policy =>
     policy.WithOrigins(allowedOrigins).AllowAnyHeader().AllowAnyMethod()));
 
-//TODO:  Add swagger to configuration folder
-builder.Services.AddSwaggerGen(options =>
-{
-    options.SwaggerDoc("v1", new OpenApiInfo { Title = "Task Management API", Version = "v1" });
-    options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
-    {
-        Name = "Authorization",
-        Type = SecuritySchemeType.Http,
-        Scheme = "bearer",
-        BearerFormat = "JWT",
-        In = ParameterLocation.Header,
-        Description = "Enter a valid JWT bearer token."
-    });
-    options.OperationFilter<AuthorizeOperationFilter>();
-});
+builder.Services.AddSwaggerConfig();
 
 //TODO:  Add jwt to configuration folder
 var jwtSection = builder.Configuration.GetSection(JwtOptions.SectionName);

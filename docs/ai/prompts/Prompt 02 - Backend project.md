@@ -84,9 +84,11 @@ Verification: Release build succeeded with zero warnings or errors. API smoke ch
 
 - Reviewed generated architecture
 - Removed seed data from the DBContext and move it to a standart SQL file to be executed in the migrations.
+- Validated API return messages and status codes against user stories
 - Moved configuration from the codebase to AppSettings
 - Cleaned up the codebase by removing unnecessary code and directives
 - Split up DTO files with many classes
 - Merged Controllers
 - Created HealthCheck endpoint
+- Added AutoMapper to avoid manual mapping to DTOs
 - Added more information to the readme files with AI

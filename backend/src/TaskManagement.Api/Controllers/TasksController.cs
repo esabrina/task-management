@@ -49,6 +49,14 @@ public sealed class TasksController(ITaskService taskService) : ControllerBase
         return Ok(await taskService.UpdateAsync(id, GetUserId(), request, cancellationToken));
     }
 
+    [HttpGet("status")]
+    [ProducesResponseType<IReadOnlyList<TaskStatusResponseDto>>(StatusCodes.Status200OK)]
+    [ProducesResponseType<ProblemDetails>(StatusCodes.Status404NotFound)]
+    public async Task<ActionResult<IReadOnlyList<TaskStatusResponseDto>>> GetTaskStatus(CancellationToken cancellationToken)
+    {
+        return Ok(await taskService.GetAllTaskStatusesAsync(cancellationToken));
+    }
+
     [HttpDelete("{id:guid}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status404NotFound)]

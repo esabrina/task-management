@@ -65,7 +65,6 @@ From the repository root, run the setup-and-run-app.ps1 to start PostgreSQL, ins
 ```powershell
 .\setup-and-run-app.ps1
 ```
-```
 
 ## Running tests
 

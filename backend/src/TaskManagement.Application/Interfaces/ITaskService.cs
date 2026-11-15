@@ -9,4 +9,5 @@ public interface ITaskService
     Task<TaskResponseDto> CreateAsync(Guid userId, CreateTaskRequestDto request, CancellationToken cancellationToken);
     Task<TaskResponseDto> UpdateAsync(Guid taskId, Guid userId, UpdateTaskRequestDto request, CancellationToken cancellationToken);
     Task DeleteAsync(Guid taskId, Guid userId, CancellationToken cancellationToken);
+    Task<IReadOnlyList<TaskStatusResponseDto>> GetAllTaskStatusesAsync(CancellationToken cancellationToken);
 }
