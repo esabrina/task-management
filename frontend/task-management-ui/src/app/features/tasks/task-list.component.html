@@ -41,13 +41,31 @@
             <thead class="table-light bg-table-header">
               <tr>
                 <th scope="col" class="ps-4">Task</th>
-                <th scope="col">Status</th>
-                <th scope="col">Due date</th>
+                <th scope="col"
+                  [attr.aria-sort]="sortField() === 'status'
+                    ? (sortDirection() === 'asc' ? 'ascending' : 'descending')
+                    : 'none'">
+                  <button type="button" class="btn btn-link p-0 text-reset text-decoration-none"
+                    [attr.aria-label]="sortActionLabel('status')"
+                    (click)="toggleSort('status')">
+                    Status <span aria-hidden="true">{{ sortIcon('status') }}</span>
+                  </button>
+                </th>
+                <th scope="col"
+                  [attr.aria-sort]="sortField() === 'dueDate'
+                    ? (sortDirection() === 'asc' ? 'ascending' : 'descending')
+                    : 'none'">
+                  <button type="button" class="btn btn-link p-0 text-reset text-decoration-none"
+                    [attr.aria-label]="sortActionLabel('dueDate')"
+                    (click)="toggleSort('dueDate')">
+                    Due date <span aria-hidden="true">{{ sortIcon('dueDate') }}</span>
+                  </button>
+                </th>
                 <th scope="col" class="text-end pe-4">Actions</th>
               </tr>
             </thead>
             <tbody>
-              @for (task of tasks(); track task.id) {
+              @for (task of sortedTasks(); track task.id) {
                 <tr class="task-row" tabindex="0"
                   (click)="openTask(task.id)"
                   (keydown.enter)="openTask(task.id)"

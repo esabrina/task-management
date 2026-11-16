@@ -11,6 +11,8 @@ backend/
     ├── TaskManagement.Application/    # DTOs, validation, and application services
     ├── TaskManagement.Domain/         # Entities and repository/unit-of-work contracts
     └── TaskManagement.Infrastructure/ # EF Core, PostgreSQL, Identity, JWT, migrations
+    └── Tests/                         
+        └── TaskManagement.UnitTests/  # Unit tests
 ```
 
 The Compose database credentials are for local development only.
@@ -80,4 +82,47 @@ Health check endpoint checks application and database health. It's available at 
 
 
 ## Running tests
-TODO
+
+From `backend\src` directory, run:
+
+```powershell
+dotnet test
+```
+
+This builds the solution and runs the automated .NET tests.
+
+
+<details>
+<summary>About Collect code coverage</summary>
+
+The test project uses Coverlet to collect code coverage. 
+Run:
+
+```powershell
+dotnet test --collect:"XPlat Code Coverage"
+```
+
+The coverage result is written as a `coverage.cobertura.xml` file under a generated `TestResults` directory in the test project.
+
+To generate an HTML coverage report, install the ReportGenerator global tool once:
+
+```powershell
+dotnet tool install -g dotnet-reportgenerator-globaltool
+```
+
+Then run the tests and generate the report from the backend repository root:
+
+```powershell
+dotnet test --collect:"XPlat Code Coverage"
+reportgenerator `
+  -reports:"tests/**/TestResults/**/coverage.cobertura.xml" `
+  -targetdir:"TestResults/CoverageReport" `
+  -reporttypes:Html
+```
+
+Open `TestResults/CoverageReport/index.html` to view the report.
+
+</details>
+
+
+

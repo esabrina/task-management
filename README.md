@@ -116,7 +116,14 @@ Since Angular server and API are running, open the application `http://localhost
 
 ## 4 - Demo credentials
 
-TODO
+Although new users can easily be created in the application, use the following credentials to sign in to the local demo account when necessary:
+
+```text
+Email: user@demo.com
+Password: demo1234
+```
+
+The account is intended for local demonstrations only.
 
 ## 5 - API
 
