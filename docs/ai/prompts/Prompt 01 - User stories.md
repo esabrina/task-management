@@ -313,4 +313,4 @@ And the API should not reveal whether the task exists for another user.
         - Should an already authenticated user be prevented from accessing the login page, or can they simply be redirected to the task list?    
 - Removed unnecessary acceptance criteria
 - Refined a few acceptance criteria
-- Splitted "Task Management" story. I was generated with more than 6 acceptance criteria
+- Splitted "Task Management" story. It was generated with more than 6 acceptance criteria.
