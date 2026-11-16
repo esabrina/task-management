@@ -67,6 +67,51 @@ public sealed class RequestDtoValidationTests
     }
 
     [Fact]
+    [Trait("Category", "Auth")]
+    public void LoginRequestDto_WhenEmailIsInvalid_ReportsInvalidCredentials()
+    {
+        var request = new LoginRequestDto { Email = "invalid-email", Password = "password" };
+
+        var errors = Validate(request);
+
+        Assert.Contains(errors, error =>
+            error.MemberNames.Contains(nameof(LoginRequestDto.Email)) &&
+            error.ErrorMessage == "Invalid email or password");
+    }
+
+    [Fact]
+    [Trait("Category", "Auth")]
+    public void RegisterRequestDto_WhenEmailExceedsMaximumLength_ReportsEmailValidationError()
+    {
+        var request = new RegisterRequestDto
+        {
+            Email = $"{new string('a', 245)}@example.com",
+            Password = "password"
+        };
+
+        var errors = Validate(request);
+
+        Assert.Contains(errors, error => error.MemberNames.Contains(nameof(RegisterRequestDto.Email)));
+    }
+
+    [Fact]
+    [Trait("Category", "Auth")]
+    public void LoginRequestDto_WhenEmailExceedsMaximumLength_ReportsEmailValidationError()
+    {
+        var request = new LoginRequestDto
+        {
+            Email = $"{new string('a', 245)}@example.com",
+            Password = "password"
+        };
+
+        var errors = Validate(request);
+
+        Assert.Contains(errors, error =>
+            error.MemberNames.Contains(nameof(LoginRequestDto.Email)) &&
+            error.ErrorMessage == "Invalid email or password");
+    }
+
+    [Fact]
     [Trait("Category", "Task")]
     public void CreateTaskRequestDto_WhenRequiredFieldsAreMissing_ReportsEachField()
     {
@@ -86,6 +131,57 @@ public sealed class RequestDtoValidationTests
 
     [Fact]
     [Trait("Category", "Task")]
+    public void CreateTaskRequestDto_WhenTitleExceedsMaximumLength_ReportsTitleValidationError()
+    {
+        var request = new CreateTaskRequestDto
+        {
+            Title = new string('a', 201),
+            StatusId = 1,
+            DueDate = DateTimeOffset.UtcNow
+        };
+
+        var errors = Validate(request);
+
+        Assert.Contains(errors, error => error.MemberNames.Contains(nameof(CreateTaskRequestDto.Title)));
+    }
+
+    [Fact]
+    [Trait("Category", "Task")]
+    public void CreateTaskRequestDto_WhenDescriptionExceedsMaximumLength_ReportsDescriptionValidationError()
+    {
+        var request = new CreateTaskRequestDto
+        {
+            Title = "Task",
+            Description = new string('a', 4001),
+            StatusId = 1,
+            DueDate = DateTimeOffset.UtcNow
+        };
+
+        var errors = Validate(request);
+
+        Assert.Contains(errors, error => error.MemberNames.Contains(nameof(CreateTaskRequestDto.Description)));
+    }
+
+    [Theory]
+    [InlineData(0)]
+    [InlineData(5)]
+    [Trait("Category", "Task")]
+    public void CreateTaskRequestDto_WhenStatusIsOutsideAllowedRange_ReportsStatusValidationError(int statusId)
+    {
+        var request = new CreateTaskRequestDto
+        {
+            Title = "Task",
+            StatusId = statusId,
+            DueDate = DateTimeOffset.UtcNow
+        };
+
+        var errors = Validate(request);
+
+        Assert.Contains(errors, error => error.MemberNames.Contains(nameof(CreateTaskRequestDto.StatusId)));
+    }
+
+    [Fact]
+    [Trait("Category", "Task")]
     public void UpdateTaskRequestDto_WhenRequiredFieldsAreMissing_ReportsEachField()
     {
         var request = new UpdateTaskRequestDto
@@ -100,6 +196,57 @@ public sealed class RequestDtoValidationTests
         Assert.Contains(errors, error => error.MemberNames.Contains(nameof(UpdateTaskRequestDto.Title)));
         Assert.Contains(errors, error => error.MemberNames.Contains(nameof(UpdateTaskRequestDto.StatusId)));
         Assert.Contains(errors, error => error.MemberNames.Contains(nameof(UpdateTaskRequestDto.DueDate)));
+    }
+
+    [Fact]
+    [Trait("Category", "Task")]
+    public void UpdateTaskRequestDto_WhenTitleExceedsMaximumLength_ReportsTitleValidationError()
+    {
+        var request = new UpdateTaskRequestDto
+        {
+            Title = new string('a', 101),
+            StatusId = 1,
+            DueDate = DateTimeOffset.UtcNow
+        };
+
+        var errors = Validate(request);
+
+        Assert.Contains(errors, error => error.MemberNames.Contains(nameof(UpdateTaskRequestDto.Title)));
+    }
+
+    [Fact]
+    [Trait("Category", "Task")]
+    public void UpdateTaskRequestDto_WhenDescriptionExceedsMaximumLength_ReportsDescriptionValidationError()
+    {
+        var request = new UpdateTaskRequestDto
+        {
+            Title = "Task",
+            Description = new string('a', 1001),
+            StatusId = 1,
+            DueDate = DateTimeOffset.UtcNow
+        };
+
+        var errors = Validate(request);
+
+        Assert.Contains(errors, error => error.MemberNames.Contains(nameof(UpdateTaskRequestDto.Description)));
+    }
+
+    [Theory]
+    [InlineData(0)]
+    [InlineData(5)]
+    [Trait("Category", "Task")]
+    public void UpdateTaskRequestDto_WhenStatusIsOutsideAllowedRange_ReportsStatusValidationError(int statusId)
+    {
+        var request = new UpdateTaskRequestDto
+        {
+            Title = "Task",
+            StatusId = statusId,
+            DueDate = DateTimeOffset.UtcNow
+        };
+
+        var errors = Validate(request);
+
+        Assert.Contains(errors, error => error.MemberNames.Contains(nameof(UpdateTaskRequestDto.StatusId)));
     }
 
     private static IReadOnlyList<ValidationResult> Validate(object request)

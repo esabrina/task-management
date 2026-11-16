@@ -8,14 +8,24 @@ namespace TaskManagement.UnitTests.Application;
 
 public sealed class AuthenticationServiceTests
 {
+    private readonly Mock<IIdentityService> _identity;
+    private readonly Mock<IJwtTokenGenerator> _tokenGenerator;
+
+    public AuthenticationServiceTests()
+    {
+        _identity = new Mock<IIdentityService>();
+        _tokenGenerator = new Mock<IJwtTokenGenerator>();
+    }
+
+    private AuthenticationService CreateService() => new(_identity.Object, _tokenGenerator.Object);
+
     [Fact]
     [Trait("Category", "Auth")]
     public async Task RegisterAsync_WhenRegistrationSucceeds_ReturnsSuccessMessage()
     {
-        var identity = new Mock<IIdentityService>();
-        identity.Setup(x => x.RegisterAsync("user@example.com", "password", It.IsAny<CancellationToken>()))
+        _identity.Setup(x => x.RegisterAsync("user@example.com", "password", It.IsAny<CancellationToken>()))
             .ReturnsAsync(new IdentityRegistrationResult(true, false, []));
-        var service = new AuthenticationService(identity.Object, Mock.Of<IJwtTokenGenerator>());
+        var service = CreateService();
 
         var result = await service.RegisterAsync(
             new RegisterRequestDto { Email = "user@example.com", Password = "password" },
@@ -28,10 +38,9 @@ public sealed class AuthenticationServiceTests
     [Trait("Category", "Auth")]
     public async Task RegisterAsync_WhenEmailAlreadyExists_ThrowsConflictException()
     {
-        var identity = new Mock<IIdentityService>();
-        identity.Setup(x => x.RegisterAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<CancellationToken>()))
+        _identity.Setup(x => x.RegisterAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(new IdentityRegistrationResult(false, true, []));
-        var service = new AuthenticationService(identity.Object, Mock.Of<IJwtTokenGenerator>());
+        var service = CreateService();
 
         var exception = await Assert.ThrowsAsync<ConflictException>(() => service.RegisterAsync(
             new RegisterRequestDto { Email = "user@example.com", Password = "password" },
@@ -44,10 +53,9 @@ public sealed class AuthenticationServiceTests
     [Trait("Category", "Auth")]
     public async Task RegisterAsync_WhenIdentityValidationFails_ThrowsRequestValidationExceptionWithErrors()
     {
-        var identity = new Mock<IIdentityService>();
-        identity.Setup(x => x.RegisterAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<CancellationToken>()))
+        _identity.Setup(x => x.RegisterAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(new IdentityRegistrationResult(false, false, ["Password is too weak."]));
-        var service = new AuthenticationService(identity.Object, Mock.Of<IJwtTokenGenerator>());
+        var service = CreateService();
 
         var exception = await Assert.ThrowsAsync<RequestValidationException>(() => service.RegisterAsync(
             new RegisterRequestDto { Email = "user@example.com", Password = "password" },
@@ -60,10 +68,9 @@ public sealed class AuthenticationServiceTests
     [Trait("Category", "Auth")]
     public async Task LoginAsync_WhenCredentialsAreInvalid_ThrowsUnauthorizedException()
     {
-        var identity = new Mock<IIdentityService>();
-        identity.Setup(x => x.ValidateCredentialsAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<CancellationToken>()))
+        _identity.Setup(x => x.ValidateCredentialsAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync((Guid?)null);
-        var service = new AuthenticationService(identity.Object, Mock.Of<IJwtTokenGenerator>());
+        var service = CreateService();
 
         var exception = await Assert.ThrowsAsync<UnauthorizedException>(() => service.LoginAsync(
             new LoginRequestDto { Email = "user@example.com", Password = "wrong" },
@@ -78,13 +85,11 @@ public sealed class AuthenticationServiceTests
     {
         var userId = Guid.NewGuid();
         var expiresAt = DateTimeOffset.UtcNow.AddMinutes(30);
-        var identity = new Mock<IIdentityService>();
-        var tokenGenerator = new Mock<IJwtTokenGenerator>();
-        identity.Setup(x => x.ValidateCredentialsAsync("user@example.com", "password", It.IsAny<CancellationToken>()))
+        _identity.Setup(x => x.ValidateCredentialsAsync("user@example.com", "password", It.IsAny<CancellationToken>()))
             .ReturnsAsync(userId);
-        tokenGenerator.Setup(x => x.Generate(userId, "user@example.com"))
+        _tokenGenerator.Setup(x => x.Generate(userId, "user@example.com"))
             .Returns(new GeneratedJwt("access-token", expiresAt));
-        var service = new AuthenticationService(identity.Object, tokenGenerator.Object);
+        var service = CreateService();
 
         var result = await service.LoginAsync(
             new LoginRequestDto { Email = "user@example.com", Password = "password" },
