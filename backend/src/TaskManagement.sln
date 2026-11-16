@@ -19,6 +19,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskManagement.UnitTests", 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskManagement.IntegrationTests", "tests\TaskManagement.IntegrationTests\TaskManagement.IntegrationTests.csproj", "{CAA948C1-B85C-4930-B6E3-BD583995BA29}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,12 +47,17 @@ Global
 		{DFC33B2D-123C-410F-9D0A-5D07400CEFCF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DFC33B2D-123C-410F-9D0A-5D07400CEFCF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DFC33B2D-123C-410F-9D0A-5D07400CEFCF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CAA948C1-B85C-4930-B6E3-BD583995BA29}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CAA948C1-B85C-4930-B6E3-BD583995BA29}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CAA948C1-B85C-4930-B6E3-BD583995BA29}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CAA948C1-B85C-4930-B6E3-BD583995BA29}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{DFC33B2D-123C-410F-9D0A-5D07400CEFCF} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{CAA948C1-B85C-4930-B6E3-BD583995BA29} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F645F203-5F2E-4348-A50E-E0D3210BE3C5}

@@ -131,10 +131,10 @@ so that I can organize my work and monitor my progress.
 **AC1 — Successful task creation**
 
 Given the user is authenticated  
-And is on the task list page
-When the user clicks on "Create" buttom
-Then the system should display the task creation form 
-When the user provides a task title, valid due date, selects the status and submits the task
+And is on the task list page  
+When the user clicks on "Create" buttom  
+Then the system should display the task creation form   
+When the user provides a task title, valid due date, selects the status and submits the task  
 Then the system should create the task  
 And associate the task with the authenticated user  
 And the user should be redirected to the task list.
@@ -210,10 +210,10 @@ And return the updated task successfully.
 **AC2 — Validate updated task data**
 
 Given the user is updating a task
-When the user submits the task without a title, due date, or status
-Or the user provides an invalid due date
-Then the system should prevent the update
-And the corresponding field should be highlighted
+When the user submits the task without a title, due date, or status  
+Or the user provides an invalid due date  
+Then the system should prevent the update  
+And the corresponding field should be highlighted  
 And an appropriate validation message should be displayed.
 
 **AC3 — Task belonging to another user**
@@ -235,29 +235,29 @@ so that I can remove tasks that are no longer needed.
 
 **AC1 — Delete existing task**
 
-Given the user is authenticated
-And is on the task list page
-And the task list is not empty
-When the user clicks the task's delete button
-Then the system should ask the user to confirm the deletion
-When the user confirms the deletion
-Then the system should delete the task
-And display a success message
+Given the user is authenticated  
+And is on the task list page  
+And the task list is not empty  
+When the user clicks the task's delete button  
+Then the system should ask the user to confirm the deletion  
+When the user confirms the deletion  
+Then the system should delete the task  
+And display a success message  
 And remove the task from the task list.
 
 **AC2 — Non-existent or unauthorized task**
 
-Given the user is authenticated
-When the user attempts to delete a task that does not exist
-Or the requested task belongs to another user
-Then the API should return 404 Not Found.
+Given the user is authenticated  
+When the user attempts to delete a task that does not exist  
+Or the requested task belongs to another user  
+Then the API should return 404 Not Found.  
 
 **AC3 — Delete task not confirmed**
 
-Given the user is authenticated
-And is on the task list page
-And the task list is not empty
-When the user clicks the task's delete button
-Then the system should ask the user to confirm the deletion
-When the user cancels the deletion
-Then the system should not delete the task
+Given the user is authenticated  
+And is on the task list page  
+And the task list is not empty  
+When the user clicks the task's delete button  
+Then the system should ask the user to confirm the deletion   
+When the user cancels the deletion  
+Then the system should not delete the task  

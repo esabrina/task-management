@@ -25,6 +25,7 @@ The main business goal is to provide a simple and intuitive way for users to cre
 - The application should provide clear validation and error messages when business rules are not met.
 
 
+
 The [User Stories Page](docs/user-stories.md) details user stories and their acceptance criteria describing the system behavior using Gherkin (BDD) format.
 
 
