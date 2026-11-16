@@ -16,7 +16,7 @@ backend/
         └── TaskManagement.UnitTests/  # Unit tests
 ```
 
-The Compose database credentials are for local development only.
+The Compose database credentials are for local environment only.
 
 The backend is organized according to Clean Architecture principles. Business rules are kept independent from the API and infrastructure concerns.
 
