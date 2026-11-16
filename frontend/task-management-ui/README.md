@@ -9,13 +9,13 @@
 - Task list ordered by due date, with task details, creation and editing, and deletion confirmation.
 - Task status options loaded from the API.
 
-## Source layout
+**Project structure**
 
 ```text
 src/
   app/
-    core/       Models, services, interceptor, and route guard
-    features/   Authentication and task components
+    core/           # Models, services, interceptor, and route guard
+    features/       # Authentication and task components
     app.routes.ts
     app.config.ts
   environments/
@@ -30,7 +30,7 @@ Requirements:
 - npm
 - The Task Management API running locally
 
-From this directory (frontend/task-management-ui):
+From the directory `frontend/task-management-ui`, run:
 
 ```bash
 npm install
@@ -49,9 +49,9 @@ Build output is written to `dist/task-management-ui`.
 
 ## API configuration
 
-The API base URL is set in `src/environments/environment.ts`. It defaults to `http://localhost:56030`; change `apiUrl` to `http://localhost:56029` if the backend is listening on that port.
+The API base URL is set in `src/environments/environment.ts`, it defaults to `http://localhost:56030` (backend must be listening on this port).
 
-The frontend uses these API routes:
+Main API routes used by the frontend:
 
 - `POST /api/auth/register` and `POST /api/auth/login`
 - `GET /api/tasks` and `GET /api/tasks/{id}`

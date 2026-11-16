@@ -2,6 +2,7 @@
 
 > The backend uses Clean Architecture, PostgreSQL, Entity Framework Core, ASP.NET Core Identity, and JWT bearer authentication.
 
+
 **Solution structure**
 
 ```text
@@ -16,6 +17,22 @@ backend/
 ```
 
 The Compose database credentials are for local development only.
+
+The backend is organized according to Clean Architecture principles. Business rules are kept independent from the API and infrastructure concerns.
+
+```mermaid
+flowchart TB
+    API[Api]
+    APP[Application]
+    DOMAIN[Domain]
+    INFRA[Infrastructure]
+
+    API --> APP
+    API --> INFRA
+    APP --> DOMAIN
+    INFRA --> APP
+    INFRA --> DOMAIN
+```
 
 
 ## Run locally

@@ -1,6 +1,6 @@
 ﻿# Task Management
 
-> .NET web app for task management
+> A .NET/Angular web app that helps users manage their tasks
 
 ## 1 - Overview
 
@@ -128,7 +128,7 @@ The account is intended for local demonstrations only.
 
 ## 5 - API
 
-APIs are described in the [Backend Page](backend/src/README.md#api-endpoints)
+APIs are described in the [Backend Page](backend/src/README.md#api-endpoints), and the [Frontend Page](frontend/task-management-ui/README.md) contains integration guidelines.
 
 
 ## 6 - AI-assisted development

@@ -40,7 +40,6 @@ flowchart LR
 
 The frontend communicates exclusively with the backend through HTTP/REST APIs.
 
-The backend is organized according to Clean Architecture principles. Business rules are kept independent from the API and infrastructure concerns.
 
 ---
 
@@ -83,26 +82,6 @@ The `infrastructure` directory contains files related to overall local environme
 
 ---
 
-# Clean Architecture
-
-The backend follows a simplified Clean Architecture approach with four projects:
-
-```mermaid
-flowchart TB
-    API[Api]
-    APP[Application]
-    DOMAIN[Domain]
-    INFRA[Infrastructure]
-
-    API --> APP
-    API --> INFRA
-    APP --> DOMAIN
-    INFRA --> APP
-    INFRA --> DOMAIN
-```
-
-
----
 
 # Authentication and Authorization
 
@@ -235,18 +214,17 @@ The following decisions were intentionally made to keep the solution focused on 
 | ORM | Entity Framework Core | Native .NET integration and productivity |
 | Authentication | ASP.NET Core Identity | Provides secure user management without introducing another service |
 | API authentication | JWT Bearer | Appropriate for a stateless REST API |
-| Authorization | User/resource ownership | Satisfies the application's security requirement without unnecessary RBAC |
+| Authorization | User/resource ownership | Satisfies the application's security requirement |
 | Database migrations | EF Core Migrations | Simple and integrated for this exercise |
-| Cloud | None | Keeps the solution locally reproducible and focused on the exercise |
 | Containers | Docker Compose | Provides reproducible local PostgreSQL infrastructure |
 
----
+
 
 # Scope and Deliberate Simplifications
 
 This solution intentionally does not introduce:
 
-- administrative users or RBAC;
+- administrative users;
 - external identity providers;
 - cloud infrastructure;
 - API gateway;
