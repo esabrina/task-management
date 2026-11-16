@@ -8,6 +8,7 @@ using TaskManagement.Application;
 using TaskManagement.Infrastructure;
 using TaskManagement.Infrastructure.Identity;
 using TaskManagement.Infrastructure.Persistence;
+using TaskManagement.Infrastructure.Seeding;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -96,6 +97,17 @@ app.MapHealthChecks("/health", new HealthCheckOptions
     }
 });
 app.MapControllers();
+
+if (app.Environment.IsDevelopment())
+{
+    using var scope = app.Services.CreateScope();
+
+    // Seed demo data in local environment
+    var seeder = scope.ServiceProvider
+        .GetRequiredService<DemoDataSeeder>();
+
+    await seeder.SeedAsync();
+}
 
 await app.RunAsync();
 

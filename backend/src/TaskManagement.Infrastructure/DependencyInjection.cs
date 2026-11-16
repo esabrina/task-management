@@ -5,6 +5,7 @@ using TaskManagement.Application.Interfaces;
 using TaskManagement.Domain.Interfaces;
 using TaskManagement.Infrastructure.Identity;
 using TaskManagement.Infrastructure.Persistence;
+using TaskManagement.Infrastructure.Seeding;
 
 namespace TaskManagement.Infrastructure;
 
@@ -34,6 +35,10 @@ public static class DependencyInjection
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddScoped<IIdentityService, IdentityService>();
         services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
+
+        // Register the DemoDataSeeder for seeding demo data
+        services.AddScoped<DemoDataSeeder>();
+
         return services;
     }
 }

@@ -4,6 +4,7 @@ public sealed class TaskItem
 {
     private TaskItem()
     {
+        // needed for PersistenceTests
     }
 
     public TaskItem(
@@ -41,5 +42,21 @@ public sealed class TaskItem
         StatusId = status.Id;
         DueDate = dueDate;
         UpdatedAt = DateTimeOffset.UtcNow;
+    }
+
+    public static TaskItem CreateSeeded(
+        Guid userId,
+        string title,
+        string? description,
+        TaskStatus status,
+        DateTimeOffset dueDate,
+        DateTimeOffset createdAt,
+        DateTimeOffset? updatedAt)
+    {
+        return new TaskItem(userId, title, description, status, dueDate)
+        {
+            CreatedAt = createdAt,
+            UpdatedAt = updatedAt
+        };
     }
 }
