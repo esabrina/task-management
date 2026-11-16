@@ -95,6 +95,7 @@ public sealed class IdentityTests
         });
         var generator = new JwtTokenGenerator(options);
 
+        var generatedAt = DateTimeOffset.UtcNow;
         var result = generator.Generate(userId, "user@example.com");
         var token = new JwtSecurityTokenHandler().ReadJwtToken(result.AccessToken);
 
@@ -102,7 +103,7 @@ public sealed class IdentityTests
         Assert.Equal("user@example.com", token.Claims.Single(x => x.Type == JwtRegisteredClaimNames.Email).Value);
         Assert.Equal("task-management", token.Issuer);
         Assert.Equal("task-management-client", token.Audiences.Single());
-        Assert.InRange(result.ExpiresAt, DateTimeOffset.UtcNow.AddMinutes(29), DateTimeOffset.UtcNow.AddMinutes(31));
+        Assert.InRange(result.ExpiresAt, generatedAt.AddMinutes(30), generatedAt.AddMinutes(30).AddSeconds(2));
     }
 
     private static Mock<UserManager<ApplicationUser>> CreateUserManager()

@@ -55,6 +55,23 @@ public sealed class TaskServiceTests
 
     [Fact]
     [Trait("Category", "Task")]
+    public async Task GetByIdAsync_WhenTaskIsNotOwned_ThrowsNotFoundException()
+    {
+        var repository = new Mock<ITaskRepository>();
+        repository.Setup(x => x.GetByIdForUserAsync(
+                It.IsAny<Guid>(), MockedData.UserId, It.IsAny<CancellationToken>()))
+            .ReturnsAsync((TaskItem?)null);
+        var service = new TaskService(
+            repository.Object, Mock.Of<ITaskStatusRepository>(), Mock.Of<IUnitOfWork>(), Mock.Of<IMapper>());
+
+        var exception = await Assert.ThrowsAsync<NotFoundException>(() => service.GetByIdAsync(
+            Guid.NewGuid(), MockedData.UserId, CancellationToken.None));
+
+        Assert.Equal("Task not found.", exception.Message);
+    }
+
+    [Fact]
+    [Trait("Category", "Task")]
     public async Task GetAllTaskStatusesAsync_WhenStatusesExist_ReturnsMappedStatuses()
     {
         var statuses = new[] { MockedData.Status(1, "To-do"), MockedData.Status(2, "Doing") };
@@ -203,5 +220,25 @@ public sealed class TaskServiceTests
 
         repository.Verify(x => x.Remove(task), Times.Once);
         unitOfWork.Verify(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once);
+    }
+
+    [Fact]
+    [Trait("Category", "Task")]
+    public async Task DeleteAsync_WhenTaskIsNotOwned_ThrowsNotFoundExceptionWithoutSaving()
+    {
+        var repository = new Mock<ITaskRepository>();
+        var unitOfWork = new Mock<IUnitOfWork>();
+        repository.Setup(x => x.GetByIdForUserAsync(
+                It.IsAny<Guid>(), MockedData.UserId, It.IsAny<CancellationToken>()))
+            .ReturnsAsync((TaskItem?)null);
+        var service = new TaskService(
+            repository.Object, Mock.Of<ITaskStatusRepository>(), unitOfWork.Object, Mock.Of<IMapper>());
+
+        var exception = await Assert.ThrowsAsync<NotFoundException>(() => service.DeleteAsync(
+            Guid.NewGuid(), MockedData.UserId, CancellationToken.None));
+
+        Assert.Equal("Task not found.", exception.Message);
+        repository.Verify(x => x.Remove(It.IsAny<TaskItem>()), Times.Never);
+        unitOfWork.Verify(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Never);
     }
 }
