@@ -101,91 +101,6 @@ flowchart TB
     INFRA --> DOMAIN
 ```
 
-### Domain (R)
-
-The Domain layer contains the core business entities and rules.
-
-Examples:
-
-- `Task`
-- `TaskStatus`
-- domain validations and business rules
-
-The Domain layer should not depend on ASP.NET Core, Entity Framework Core, PostgreSQL, or Angular.
-
----
-
-### Application (R)
-
-The Application layer contains the application's use cases and business logic.
-
-Examples:
-
-- Register user
-- Login
-- Create task
-- Get tasks
-- Get task
-- Update task
-- Delete task
-
-
----
-
-### Infrastructure (R)
-
-The Infrastructure layer contains implementations for external concerns, such as:
-
-- Entity Framework Core
-- PostgreSQL access
-- ASP.NET Core Identity persistence
-- repository/data access implementations
-- database migrations
-
-Infrastructure implements abstractions required by the Application layer.
-
----
-
-### API (R)
-
-The API layer is responsible for exposing the application's functionality through HTTP endpoints.
-
-Its responsibilities include:
-
-- HTTP request/response handling
-- authentication configuration
-- authorization
-- model binding
-- DTO mapping
-- HTTP status codes
-- API endpoint definitions
-
-Business rules should not be implemented directly in controllers.
-
----
-
-# Dependency Direction (R)
-
-The main architectural rule is that inner layers should not depend on outer infrastructure concerns.
-
-```mermaid
-flowchart LR
-    DOMAIN[Domain]
-    APP[Application]
-    API[API]
-    INFRA[Infrastructure]
-
-    APP --> DOMAIN
-    API --> APP
-    INFRA --> APP
-    INFRA --> DOMAIN
-```
-
-The Domain layer is the most independent part of the application.
-
-The Application layer depends on Domain abstractions and contains the application's use cases.
-
-The API and Infrastructure layers are implementation details around the application core.
 
 ---
 
@@ -222,34 +137,9 @@ sequenceDiagram
     API-->>Angular: Protected resource
 ```
 
-Passwords are handled by ASP.NET Core Identity and are not stored as plain text. (R)
-
-The JWT identifies the authenticated user. The user's identity is then used to determine which tasks the user is allowed to access. (R)
-
 The application does not introduce administrative roles because user administration is outside the scope of the technical exercise. The authorization model is intentionally simple:
 
 > An authenticated user can only manage their own tasks.
-
----
-
-
-Conceptually: (R) ?
-
-```mermaid
-flowchart TD
-    Request[Authenticated Request]
-    Auth{Authenticated?}
-    Owner{Task belongs to user?}
-    Unauthorized[401 Unauthorized]
-    Forbidden[Access denied]
-    Operation[Execute operation]
-
-    Request --> Auth
-    Auth -->|No| Unauthorized
-    Auth -->|Yes| Owner
-    Owner -->|No| Forbidden
-    Owner -->|Yes| Operation
-```
 
 
 ---
@@ -257,8 +147,6 @@ flowchart TD
 # Data Model
 
 PostgreSQL is used as the relational data store.
-
-A relational database was selected because the application has a simple relational domain, particularly the relationship between users and tasks. (R)
 
 The main application entities are:
 
@@ -330,37 +218,6 @@ flowchart TB
     API --> PostgreSQL
 ```
 
-Docker is used for the database to provide a consistent and reproducible local development environment. (R)
-
-The goal is that a developer or interviewer can clone the repository, start the required infrastructure, apply the database migrations, and run the application locally without requiring access to AWS, Azure, or other cloud services. (R)
-
----
-
-# Testing Strategy (Review)
-
-The project follows a testing approach aligned with the exercise's TDD preference.
-
-Tests are organized according to the application layers.
-
-### Domain Tests
-
-Verify domain rules and validations without requiring external dependencies.
-
-### Application Tests
-
-Verify use cases and business logic using mocked or test implementations of dependencies.
-
-### API Tests
-
-Verify API behavior, including:
-
-- HTTP status codes
-- request validation
-- authentication requirements
-- authorization
-- API responses
-
-The goal is to keep business logic highly testable and avoid coupling tests to infrastructure whenever it is unnecessary.
 
 ---
 

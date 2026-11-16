@@ -21,7 +21,6 @@ builder.Services.AddCors(options => options.AddPolicy("Frontend", policy =>
 
 builder.Services.AddSwaggerConfig();
 
-//TODO:  Add jwt to configuration folder
 var jwtSection = builder.Configuration.GetSection(JwtOptions.SectionName);
 builder.Services.Configure<JwtOptions>(jwtSection);
 var jwtOptions = jwtSection.Get<JwtOptions>()

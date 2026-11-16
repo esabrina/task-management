@@ -1,15 +1,28 @@
 # Task Management Backend
 
-The backend uses Clean Architecture, PostgreSQL, Entity Framework Core, ASP.NET Core Identity, and JWT bearer authentication.
+> The backend uses Clean Architecture, PostgreSQL, Entity Framework Core, ASP.NET Core Identity, and JWT bearer authentication.
 
-## Requirements
+**Solution structure**
+
+```text
+backend/
+└── src/
+    ├── TaskManagement.Api/            # Controllers, middleware, Swagger, startup
+    ├── TaskManagement.Application/    # DTOs, validation, and application services
+    ├── TaskManagement.Domain/         # Entities and repository/unit-of-work contracts
+    └── TaskManagement.Infrastructure/ # EF Core, PostgreSQL, Identity, JWT, migrations
+```
+
+The Compose database credentials are for local development only.
+
+
+## Run locally
+
+**Requirements**
 
 - .NET 9 SDK
 - Docker with the Compose plugin (must be running)
 - EF Core command-line tools 9.0.4 (will be installed automatically by the setup script)
-
-
-## Run locally
 
 Run the following command from the repository root, it will create the environment and run the application. 
 
@@ -18,6 +31,7 @@ Run the following command from the repository root, it will create the environme
 ```
 
 Open Swagger UI at `/swagger` on the local address (https://localhost:56029/swagger/)
+
 
 ## API endpoints
 
@@ -64,19 +78,6 @@ Tokens expire after 30 minutes.
 
 Health check endpoint checks application and database health. It's available at `/health`
 
-## Solution structure
-
-```text
-backend/
-└── src/
-    ├── TaskManagement.sln
-    ├── TaskManagement.Api/            # Controllers, middleware, Swagger, startup
-    ├── TaskManagement.Application/    # DTOs, validation, and application services
-    ├── TaskManagement.Domain/         # Entities and repository/unit-of-work contracts
-    └── TaskManagement.Infrastructure/ # EF Core, PostgreSQL, Identity, JWT, migrations
-```
-
-The Compose database credentials are for local development only.
 
 ## Running tests
-No unit or integration test projects are included yet.
+TODO

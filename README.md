@@ -113,18 +113,17 @@ The script opens the backend and frontend in separate terminal windows.
 
 Since Angular server and API are running, open the application `http://localhost:4200` in the web browser.
 
-## 4 - Running tests
 
-...
+## 4 - Demo credentials
 
-## 5 - Demo credentials
+TODO
 
-## 6 - API
+## 5 - API
 
 APIs are described in the [Backend Page](backend/src/README.md#api-endpoints)
 
 
-## 7 - AI-assisted development
+## 6 - AI-assisted development
 
 GitHub Copilot was used throughout the project for AI-assisted development, with a focus on improving productivity while maintaining engineering quality and control.
 
@@ -139,8 +138,9 @@ AI-generated code and documentation was treated as a development aid rather than
 For more information, see the AI prompt files located in the `docs/ai/prompts` directory, while the custom skills are located in the `.github/skills` folder.
 
 
-## 8 - Backlog
+## 7 - Backlog
 
 - [ ] Run frontend and backend in container (using docker-compose)
 - [ ] Add Node installation to setup-and-run-app.ps1 script
+- [ ] Create integration tests in the backend project
 - [ ] Admin user concept
