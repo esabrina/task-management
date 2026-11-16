@@ -13,7 +13,8 @@ backend/
     ├── TaskManagement.Domain/         # Entities and repository/unit-of-work contracts
     └── TaskManagement.Infrastructure/ # EF Core, PostgreSQL, Identity, JWT, migrations
     └── Tests/                         
-        └── TaskManagement.UnitTests/  # Unit tests
+        └── TaskManagement.UnitTests/         # Unit tests
+        └── TaskManagement.IntegrationTests/  # Integration tests
 ```
 
 The Compose database credentials are for local environment only.
@@ -69,14 +70,6 @@ Authorization: Bearer <accessToken>
 | `POST` | `/api/auth/register` | Register with a unique email and a password of at least 6 characters. |
 | `POST` | `/api/auth/login` | Authenticate and receive an access token and its expiration time. |
 
-Example registration/login request:
-
-```json
-{
-  "email": "user@example.com",
-  "password": "example-password"
-}
-```
 
 The login response contains `accessToken` and `expiresAt`.
 
@@ -100,17 +93,21 @@ Health check endpoint checks application and database health. It's available at 
 
 ## Running tests
 
+This project uses xUnit for unit and integration tests. 
+
+Based on the limited scope of this application, in memory SQLite is used for the integration tests because it provides a fast and isolated database, reducing setup and execution time compared with PostgreSQL running in a container. In a real-world project, the tests (or a separate set of them) should use the containerized PostgreSQL instance especially to validate database-specific behavior, including schema migrations, constraints, and data types.
+
 From `backend\src` directory, run:
 
 ```powershell
 dotnet test
 ```
 
-This builds the solution and runs the automated .NET tests.
+This builds the solution and runs both unit and integration .NET tests.
 
 
 <details>
-<summary>About Collect code coverage</summary>
+<summary>About collect code coverage</summary>
 
 The test project uses Coverlet to collect code coverage. 
 Run:

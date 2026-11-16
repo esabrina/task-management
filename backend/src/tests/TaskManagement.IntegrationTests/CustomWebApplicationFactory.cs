@@ -12,6 +12,7 @@ namespace TaskManagement.IntegrationTests;
 
 public sealed class CustomWebApplicationFactory : WebApplicationFactory<Program>
 {
+    // for this app's limited scope, we use in-memory SQLite for speed and easy setup
     private readonly SqliteConnection connection = new("DataSource=:memory:");
 
     public CustomWebApplicationFactory()

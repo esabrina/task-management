@@ -150,5 +150,5 @@ For more information, see the AI prompt files located in the `docs/ai/prompts` d
 
 - [ ] Run frontend and backend in container (using docker-compose)
 - [ ] Add Node installation to setup-and-run-app.ps1 script
-- [ ] Create integration tests in the backend project
+- [X] Create integration tests in the backend project
 - [ ] Admin user concept
